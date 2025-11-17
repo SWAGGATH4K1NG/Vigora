@@ -1,2 +1,2 @@
 # Vigora
-Vigora
+Vigora FitnessApp

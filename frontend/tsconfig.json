@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+, "backend/src/models/TrainerProfile.js", "scripts/seedAdmin.js"  ]
+}
