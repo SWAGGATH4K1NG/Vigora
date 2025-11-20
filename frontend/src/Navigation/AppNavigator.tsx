@@ -1,37 +1,46 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
+import { Platform } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import DashboardScreen from "../Screens/DashboardScreen";
-import TrainingScreen from "../Screens/TrainingScreen";
-import FoodScreen from "../Screens/FoodScreen";
-import ProgressScreen from "../Screens/ProgressScreen";
-import Profile from "../Screens/Profile";
-import WelcomeScreen from "../Screens/WelcomeScreen";
-import LoginScreen from "../Screens/LoginScreen";
-import RegisterScreen from "../Screens/RegisterScreen";
+import HomeScreen from "../Screens/Home/HomeScreen";
+import LoginScreen from "../Screens/Login/LoginScreen";
+import RegisterScreen from "../Screens/Register/RegisterScreen";
+import { RootStackParamList } from "./types";
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const WebStack = createStackNavigator<RootStackParamList>();
 
-function MainTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Dashboard" component={DashboardScreen} />
-      <Tab.Screen name="Treinos" component={TrainingScreen} />
-      <Tab.Screen name="Alimentação" component={FoodScreen} />
-      <Tab.Screen name="Progresso" component={ProgressScreen} />
-      <Tab.Screen name="Perfil" component={Profile} />
-    </Tab.Navigator>
-  );
-}
+const NativeStack =
+  Platform.OS === "web"
+    ? null
+    : // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require("@react-navigation/native-stack").createNativeStackNavigator<
+        RootStackParamList
+      >();
 
 export default function AppNavigator() {
+  if (Platform.OS === "web") {
+    return (
+      <WebStack.Navigator
+        initialRouteName="Register"
+        screenOptions={{ headerShown: false }}
+      >
+        <WebStack.Screen name="Home" component={HomeScreen} />
+        <WebStack.Screen name="Login" component={LoginScreen} />
+        <WebStack.Screen name="Register" component={RegisterScreen} />
+      </WebStack.Navigator>
+    );
+  }
+
+  if (!NativeStack) return null;
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="Main" component={MainTabs} />
-    </Stack.Navigator>
+    <NativeStack.Navigator
+      initialRouteName="Register"
+      screenOptions={{ headerShown: false }}
+    >
+      <NativeStack.Screen name="Home" component={HomeScreen} />
+      <NativeStack.Screen name="Login" component={LoginScreen} />
+      <NativeStack.Screen name="Register" component={RegisterScreen} />
+    </NativeStack.Navigator>
   );
 }

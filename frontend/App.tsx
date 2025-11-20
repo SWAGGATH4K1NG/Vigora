@@ -1,19 +1,18 @@
-import React from 'react';
-import { AppRegistry, Platform } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import AppNavigator from './frontend/src/Src/Navigation/AppNavigator';
+import "react-native-gesture-handler";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AppNavigator from "./src/Navigation/AppNavigator";
+import { AuthProvider } from "./src/context/AuthContext";
 
-function App() {
+export default function App() {
   return (
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <AuthProvider>
+          <AppNavigator />
+        </AuthProvider>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
-
-// Registrar apenas se não for web
-if (Platform.OS !== 'web') {
-  AppRegistry.registerComponent('main', () => App);
-}
-
-export default App;
